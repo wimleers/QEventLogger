@@ -1,0 +1,16 @@
+How to use in your Qt application
+---------------------------------
+
+1) Add the QEventLogger.h and QEventLogger.cpp files to your project, and add
+   them to your .pro file.
+2) Subclass QApplication, e.g. in the MyApplication class.
+3) Include QEventLogger.h in MyApplication.h and add a QEventLogger member:
+     QEventLogger * eventLogger;
+4) In the MyApplication constructor, initialize the event logger and install
+   it as an event filter (the first parameter is the basename of the
+   resulting log files):
+     this->eventLogger = new QEventLogger("./events");
+     this->installEventFilter(this->eventLogger);
+5) When you now build your application, you will get .csv files in the same
+   directory as the application binary, with filenames such as
+     "events 2010-10-29T20/29/17.csv"
