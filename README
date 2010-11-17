@@ -13,4 +13,4 @@ How to use in your Qt application
      this->installEventFilter(this->eventLogger);
 5) When you now build your application, you will get .csv files in the same
    directory as the application binary, with filenames such as
-     "events 2010-10-29T20/29/17.csv"
+     "events 2010-10-29T20-29-17.csv"
