@@ -13,6 +13,8 @@
 #define NONE -1
 #define MOUSE 0
 #define KEYBOARD 1
+#define HOVER 2
+#define FOCUS 3
 
 class QEventLogger : public QObject {
     Q_OBJECT

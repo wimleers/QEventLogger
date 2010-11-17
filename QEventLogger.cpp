@@ -26,6 +26,8 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
 
     static QMouseEvent * mouseEvent;
     static QKeyEvent * keyEvent;
+    static QHoverEvent * hoverEvent;
+    static QFocusEvent * focusEvent;
     static QString eventType, details;
     static int inputType, mouseButton, modifierKey;
     inputType = NONE;
@@ -57,6 +59,30 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
     case QEvent::KeyRelease:
         inputType = KEYBOARD;
         eventType = "KeyRelease";
+        break;
+    case QEvent::HoverEnter:
+        inputType = HOVER;
+        eventType = "HoverEnter";
+        break;
+    case QEvent::GraphicsSceneHoverEnter:
+        inputType = HOVER;
+        eventType = "GraphicsSceneHoverEnter";
+        break;
+    case QEvent::HoverLeave:
+        inputType = HOVER;
+        eventType = "HoverLeave";
+        break;
+    case QEvent::GraphicsSceneHoverLeave:
+        inputType = HOVER;
+        eventType = "GraphicsSceneHoverLeave";
+        break;
+    case QEvent::FocusIn:
+        inputType = FOCUS;
+        eventType = "FocusIn";
+        break;
+    case QEvent::FocusOut:
+        inputType = FOCUS;
+        eventType = "FocusOut";
         break;
     default:
         break;
@@ -109,6 +135,16 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
         details += '"';
 
         this->appendToLog("Keyboard", eventType, details);
+    }
+    else if (inputType == HOVER) {
+        hoverEvent = static_cast<QHoverEvent *>(event);
+
+        qDebug() << hoverEvent << hoverEvent->pos();
+    }
+    else if (inputType == FOCUS) {
+        focusEvent = static_cast<QFocusEvent *>(event);
+
+        qDebug() << focusEvent;
     }
 
     // Always propagate the event further.
