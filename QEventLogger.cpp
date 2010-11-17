@@ -3,7 +3,7 @@
 QEventLogger::QEventLogger(const QString & logFileBaseName, QObject * parent) : QObject(parent) {
     // Build log file name.
     QDateTime now = QDateTime::currentDateTime();
-    QString fullLogFileName = logFileBaseName + ' ' + now.toString(Qt::ISODate) + ".csv";
+    QString fullLogFileName = logFileBaseName + ' ' + now.toString(Qt::ISODate).replace(":", "-") + ".csv";
 
     // Open log file.
     this->logFile = new QFile(fullLogFileName);
