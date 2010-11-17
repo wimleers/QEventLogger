@@ -13,7 +13,7 @@ QEventLogger::QEventLogger(const QString & logFileBaseName, QObject * parent) : 
 
     // Write header to log file.
     *log << "; Date and time are: " << now.toString(Qt::ISODate) << '\n';
-    *log << "time,input type,event type,details\n";
+    *log << "time,input type,event type,target widget class,details\n";
     log->flush();
 
     // Start timer.
@@ -22,8 +22,6 @@ QEventLogger::QEventLogger(const QString & logFileBaseName, QObject * parent) : 
 }
 
 bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
-    Q_UNUSED(obj);
-
     static QMouseEvent * mouseEvent;
     static QKeyEvent * keyEvent;
     static QHoverEvent * hoverEvent;
@@ -107,7 +105,7 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
         details += ',' + buttonsPressed;
         details += '"';
 
-        this->appendToLog("Mouse", eventType, details);
+        this->appendToLog("Mouse", eventType, obj->metaObject()->className(), details);
     }
     else if (inputType == KEYBOARD) {
         keyEvent = static_cast<QKeyEvent *>(event);
@@ -134,25 +132,25 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
         details += ',' + modifierKeysPressed;
         details += '"';
 
-        this->appendToLog("Keyboard", eventType, details);
+        this->appendToLog("Keyboard", eventType, obj->metaObject()->className(),details);
     }
     else if (inputType == HOVER) {
         hoverEvent = static_cast<QHoverEvent *>(event);
 
-        qDebug() << hoverEvent << hoverEvent->pos();
+        qDebug() << hoverEvent << hoverEvent->pos() << obj->metaObject()->className();
     }
     else if (inputType == FOCUS) {
         focusEvent = static_cast<QFocusEvent *>(event);
 
-        qDebug() << focusEvent;
+        qDebug() << focusEvent << obj->metaObject()->className();
     }
 
     // Always propagate the event further.
     return false;
 }
 
-void QEventLogger::appendToLog(const QString & inputType, const QString & eventType, const QString & details) {
-    *(this->log) << this->time->elapsed() << ',' << inputType<< ',' << eventType << ',' << details << '\n';
+void QEventLogger::appendToLog(const QString & inputType, const QString & eventType, const QString & targetWidgetClass, const QString & details) {
+    *(this->log) << this->time->elapsed() << ',' << inputType<< ',' << eventType << ',' << targetWidgetClass << ',' << details << '\n';
 //    qDebug() << this->time->elapsed() << inputType << eventType << details;
     this->log->flush();
 }

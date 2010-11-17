@@ -24,7 +24,7 @@ public:
 
 protected:
     bool eventFilter(QObject * obj, QEvent * event);
-    void appendToLog(const QString & inputType, const QString & eventType, const QString & details);
+    void appendToLog(const QString & inputType, const QString & eventType, const QString & targetWidgetClass, const QString & details);
 
 private:
     QFile * logFile;
