@@ -8,6 +8,7 @@
 #include <QTime>
 #include <QFile>
 #include <QTextStream>
+#include <QHash>
 #include <QDebug>
 
 #define NONE -1
@@ -24,12 +25,13 @@ public:
 
 protected:
     bool eventFilter(QObject * obj, QEvent * event);
-    void appendToLog(const QString & inputType, const QString & eventType, const QString & targetWidgetClass, const QString & details);
+    void appendToLog(const QString & inputType, const QString & eventType, const QString & targetWidget, const QString & details);
 
 private:
     QFile * logFile;
     QTextStream * log;
     QTime * time;
+    QHash<QString, QHash<QObject *, uint> > widgetPointerToID;
 };
 
 #endif // QEVENTLOGGER_H

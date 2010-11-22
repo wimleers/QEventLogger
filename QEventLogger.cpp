@@ -27,8 +27,11 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
     static QHoverEvent * hoverEvent;
     static QFocusEvent * focusEvent;
     static QString eventType, details;
-    static int inputType, mouseButton, modifierKey;
+    static int inputType, mouseButton, modifierKey, id;
+    static QString inputTypeAsString, className, targetWidget;
     inputType = NONE;
+
+    inputTypeAsString = "";
 
     switch (event->type()) {
     case QEvent::MouseMove:
@@ -105,7 +108,7 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
         details += ',' + buttonsPressed;
         details += '"';
 
-        this->appendToLog("Mouse", eventType, obj->metaObject()->className(), details);
+        inputTypeAsString = "Mouse";
     }
     else if (inputType == KEYBOARD) {
         keyEvent = static_cast<QKeyEvent *>(event);
@@ -132,25 +135,35 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
         details += ',' + modifierKeysPressed;
         details += '"';
 
-        this->appendToLog("Keyboard", eventType, obj->metaObject()->className(),details);
+        inputTypeAsString = "Keyboard";
     }
     else if (inputType == HOVER) {
         hoverEvent = static_cast<QHoverEvent *>(event);
 
-        qDebug() << hoverEvent << hoverEvent->pos() << obj->metaObject()->className();
+        // qDebug() << hoverEvent << hoverEvent->pos() << obj->metaObject()->className() << obj->inherits("QWidget");
     }
     else if (inputType == FOCUS) {
         focusEvent = static_cast<QFocusEvent *>(event);
 
-        qDebug() << focusEvent << obj->metaObject()->className();
+        // qDebug() << focusEvent << obj->metaObject()->className();
+    }
+
+    if (!inputTypeAsString.isEmpty()) {
+        className = obj->metaObject()->className();
+        if (!this->widgetPointerToID.contains(className) || !this->widgetPointerToID[className].contains(obj)) {
+            this->widgetPointerToID[className][obj] = this->widgetPointerToID[className].size();
+        }
+        id = this->widgetPointerToID[className][obj];
+        targetWidget = className + " " + QString::number(id);
+        this->appendToLog(inputTypeAsString, eventType, targetWidget, details);
     }
 
     // Always propagate the event further.
     return false;
 }
 
-void QEventLogger::appendToLog(const QString & inputType, const QString & eventType, const QString & targetWidgetClass, const QString & details) {
-    *(this->log) << this->time->elapsed() << ',' << inputType<< ',' << eventType << ',' << targetWidgetClass << ',' << details << '\n';
-//    qDebug() << this->time->elapsed() << inputType << eventType << details;
+void QEventLogger::appendToLog(const QString & inputType, const QString & eventType, const QString & targetWidget, const QString & details) {
+    *(this->log) << this->time->elapsed() << ',' << inputType<< ',' << eventType << ',' << targetWidget << ',' << details << '\n';
+   qDebug() << this->time->elapsed() << inputType << eventType << targetWidget << details;
     this->log->flush();
 }
