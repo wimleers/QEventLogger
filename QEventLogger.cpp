@@ -103,10 +103,9 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
             buttonsPressed += 'R';
 
         // Build the details string.
-        details = '"';
-        details += QString::number(mouseEvent->x()) + ',' + QString::number(mouseEvent->y());
-        details += ',' + buttonsPressed;
-        details += '"';
+        details = "";
+        details += QString::number(mouseEvent->x()) + ';' + QString::number(mouseEvent->y());
+        details += ';' + buttonsPressed;
 
         inputTypeAsString = "Mouse";
     }
@@ -129,11 +128,10 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
         // keyEvent->text() == "".
 
         // Build the details string.
-        details = '"';
+        details = "";
         details += QString::number(keyEvent->key());
-        details += ',' + keyEvent->text();
-        details += ',' + modifierKeysPressed;
-        details += '"';
+        details += ';' + keyEvent->text();
+        details += ';' + modifierKeysPressed;
 
         inputTypeAsString = "Keyboard";
     }
