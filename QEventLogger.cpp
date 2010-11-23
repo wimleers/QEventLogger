@@ -12,8 +12,8 @@ QEventLogger::QEventLogger(const QString & logFileBaseName, QObject * parent) : 
     this->log = new QTextStream(this->logFile);
 
     // Write header to log file.
-    *log << "; Date and time are: " << now.toString(Qt::ISODate) << '\n';
-    *log << "time,input type,event type,target widget class,details\n";
+    // *log << "; Date and time are: " << now.toString(Qt::ISODate) << '\n';
+    // *log << "time,input type,event type,target widget class,details\n";
     log->flush();
 
     // Start timer.
