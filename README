@@ -8,8 +8,9 @@ How to use in your Qt application
      QEventLogger * eventLogger;
 4) In the MyApplication constructor, initialize the event logger and install
    it as an event filter (the first parameter is the basename of the
-   resulting log files):
-     this->eventLogger = new QEventLogger("./events");
+   resulting log files, the second parameter is a pointer to the app's
+   main window, the dimensions of which will be logged as well):
+     this->eventLogger = new QEventLogger("./events", this->mainWindow);
      this->installEventFilter(this->eventLogger);
 5) When you now build your application, you will get .csv files in the same
    directory as the application binary, with filenames such as
