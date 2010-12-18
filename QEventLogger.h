@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QHash>
+#include <QMainWindow>
 #include <QDebug>
 
 #define NONE -1
@@ -21,7 +22,7 @@ class QEventLogger : public QObject {
     Q_OBJECT
 
 public:
-    explicit QEventLogger(const QString & logFileBaseName, QObject * parent = 0);
+    explicit QEventLogger(const QString & logFileBaseName, const QMainWindow * mainWindow, QObject * parent = 0);
 
 protected:
     bool eventFilter(QObject * obj, QEvent * event);
