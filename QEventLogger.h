@@ -6,11 +6,13 @@
 #include <QKeyEvent>
 #include <QDateTime>
 #include <QTime>
+#include <QDir>
 #include <QFile>
 #include <QTextStream>
 #include <QHash>
-#include <QMainWindow>
+#include <QWidget>
 #include <QDebug>
+#include <QPixmap>
 
 #define NONE -1
 #define MOUSE 0
@@ -22,13 +24,16 @@ class QEventLogger : public QObject {
     Q_OBJECT
 
 public:
-    explicit QEventLogger(const QString & logFileBaseName, const QMainWindow * mainWindow, QObject * parent = 0);
+    explicit QEventLogger(const QString & logFileBaseName, QWidget * mainWidget, const bool screenshotsEnabled, QObject * parent = 0);
 
 protected:
     bool eventFilter(QObject * obj, QEvent * event);
     void appendToLog(const QString & inputType, const QString & eventType, const QString & targetWidget, const QString & details);
 
 private:
+    const bool screenshotsEnabled;
+    QString screenshotDirName;
+    QWidget * mainWidget;
     QFile * logFile;
     QTextStream * log;
     QTime * time;

@@ -9,9 +9,13 @@ How to use in your Qt application
 4) In the MyApplication constructor, initialize the event logger and install
    it as an event filter (the first parameter is the basename of the
    resulting log files, the second parameter is a pointer to the app's
-   main window, the dimensions of which will be logged as well):
-     this->eventLogger = new QEventLogger("./events", this->mainWindow);
+   main window, the dimensions of which will be logged as well, the third
+   parameter disables/enables screenshots to be taken for each logged event):
+     this->eventLogger = new QEventLogger("./events", this->mainWindow, true);
      this->installEventFilter(this->eventLogger);
 5) When you now build your application, you will get .csv files in the same
    directory as the application binary, with filenames such as
-     "events 2010-10-29T20-29-17.csv"
+   "events 2010-10-29T20-29-17.csv". If the screenshot mode was enabled, 
+   a directory with a filename such as "screenshots 2010-10-29T20-29-17" is created 
+   in the current directory. Within that created directory, PNG-files can be found
+   with filenames such as "12345.png".
