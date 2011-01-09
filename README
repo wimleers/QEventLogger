@@ -15,7 +15,9 @@ How to use in your Qt application
      this->installEventFilter(this->eventLogger);
 5) When you now build your application, you will get .csv files in the same
    directory as the application binary, with filenames such as
-   "events 2010-10-29T20-29-17.csv". If the screenshot mode was enabled, 
-   a directory with a filename such as "screenshots 2010-10-29T20-29-17" is created 
-   in the current directory. Within that created directory, PNG-files can be found
-   with filenames such as "12345.png".
+   "events 2010-10-29T20-29-17.csv".
+   If the screenshot mode is enabled, a directory with a filename such as
+   "screenshots 2010-10-29T20-29-17" will be created in the current directory.
+   Within that directory, PNG files can be found with filenames such as
+   "12345.png", where the number in the filename indicates the relative time
+   at which the screenshot is made.

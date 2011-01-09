@@ -2,8 +2,9 @@
 
 QEventLogger::QEventLogger(const QString & logFileBaseName,
                            QWidget * mainWidget,
-                           const bool screenshotsEnabled,
-                           QObject * parent) : QObject(parent), mainWidget(mainWidget), screenshotsEnabled(screenshotsEnabled) {
+                           bool screenshotsEnabled,
+                           QObject * parent) : QObject(parent), mainWidget(mainWidget), screenshotsEnabled(screenshotsEnabled)
+{
     // Build log file name.
     QDateTime now = QDateTime::currentDateTime();
     QString fullLogFileName = logFileBaseName + " " + now.toString(Qt::ISODate).replace(":", "-") + ".csv";
@@ -21,11 +22,11 @@ QEventLogger::QEventLogger(const QString & logFileBaseName,
     log->flush();
 
     // Create the dir in which screenshots will be stored, if requested.
-    if(screenshotsEnabled) {
+    if (screenshotsEnabled) {
         screenshotDirName = "./screenshots " + now.toString(Qt::ISODate).replace(":", "-");
         qDebug() << QDir().mkdir(screenshotDirName);
     }
-    
+
     // Start timer.
     this->time = new QTime();
     this->time->start();
@@ -171,12 +172,14 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
 }
 
 void QEventLogger::appendToLog(const QString & inputType, const QString & eventType, const QString & targetWidget, const QString & details) {
+    static int elapsedTime;
+
     // Store the amount of time that has elapsed, so there are no inconsistencies between further usages.
-    const int elapsedTime = this->time->elapsed();
-    
-    if(this->screenshotsEnabled)
+    elapsedTime = this->time->elapsed();
+
+    if (this->screenshotsEnabled)
         (QPixmap::grabWidget(mainWidget).toImage()).save(screenshotDirName + "/" + QString::number(elapsedTime) + ".png", "PNG");
-    
+
     *(this->log) << elapsedTime << ',' << inputType<< ',' << eventType << ',' << targetWidget << ',' << details << '\n';
     //qDebug() << elapsedTime << inputType << eventType << targetWidget << details;
     this->log->flush();
