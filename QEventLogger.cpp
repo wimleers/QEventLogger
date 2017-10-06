@@ -3,7 +3,7 @@
 QEventLogger::QEventLogger(const QString & logFileBaseName,
                            QWidget * mainWidget,
                            bool screenshotsEnabled,
-                           QObject * parent) : QObject(parent), mainWidget(mainWidget), screenshotsEnabled(screenshotsEnabled)
+                           QObject * parent) : QObject(parent), mMainWidget(mainWidget), mScreenshotsEnabled(screenshotsEnabled)
 {
     // Build log file name.
     QDateTime now = QDateTime::currentDateTime();
@@ -148,13 +148,16 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
     }
     else if (inputType == HOVER) {
         hoverEvent = static_cast<QHoverEvent *>(event);
-
-        // qDebug() << hoverEvent << hoverEvent->pos() << obj->metaObject()->className() << obj->inherits("QWidget");
+        if (1 == 2) { //TODO
+          qDebug() << hoverEvent << hoverEvent->pos() << obj->metaObject()->className() << obj->inherits("QWidget");
+        }
     }
     else if (inputType == FOCUS) {
         focusEvent = static_cast<QFocusEvent *>(event);
 
-        // qDebug() << focusEvent << obj->metaObject()->className();
+        if (1 == 2) { //TODO
+          qDebug() << focusEvent << obj->metaObject()->className();
+        }
     }
 
     if (!inputTypeAsString.isEmpty()) {
@@ -177,8 +180,8 @@ void QEventLogger::appendToLog(const QString & inputType, const QString & eventT
     // Store the amount of time that has elapsed, so there are no inconsistencies between further usages.
     elapsedTime = this->time->elapsed();
 
-    if (this->screenshotsEnabled && eventType.compare("MouseMove") != 0)
-        (QPixmap::grabWidget(mainWidget).toImage()).save(screenshotDirName + "/" + QString::number(elapsedTime) + ".png", "PNG");
+    if (this->mScreenshotsEnabled && eventType.compare("MouseMove") != 0)
+        (QPixmap::grabWidget(mMainWidget).toImage()).save(screenshotDirName + "/" + QString::number(elapsedTime) + ".png", "PNG");
 
     *(this->log) << elapsedTime << ',' << inputType<< ',' << eventType << ',' << targetWidget << ',' << details << '\n';
     //qDebug() << elapsedTime << inputType << eventType << targetWidget << details;
