@@ -21,3 +21,9 @@ How to use in your Qt application
    Within that directory, PNG files can be found with filenames such as
    "12345.png", where the number in the filename indicates the relative time
    at which the screenshot is made.
+
+Complete minimal example
+------------------------
+
+A complete minimal example can be found at 
+https://github.com/richelbilderbeek/QEventLoggerExample1
