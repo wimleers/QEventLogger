@@ -68,6 +68,7 @@ bool QEventLogger::eventFilter(QObject * obj, QEvent * event) {
     case QEvent::KeyPress:
         inputType = KEYBOARD;
         eventType = "KeyPress";
+        break;
     case QEvent::KeyRelease:
         inputType = KEYBOARD;
         eventType = "KeyRelease";
