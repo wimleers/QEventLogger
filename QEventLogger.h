@@ -24,16 +24,16 @@ class QEventLogger : public QObject {
     Q_OBJECT
 
 public:
-    explicit QEventLogger(const QString & logFileBaseName, QWidget * mainWidget, bool screenshotsEnabled, QObject * parent = 0);
+    explicit QEventLogger(const QString & logFileBaseName, QWidget * mMainWidget, bool mScreenshotsEnabled, QObject * parent = 0);
 
 protected:
     bool eventFilter(QObject * obj, QEvent * event);
     void appendToLog(const QString & inputType, const QString & eventType, const QString & targetWidget, const QString & details);
 
 private:
-    bool screenshotsEnabled;
+    QWidget * mMainWidget;
+    bool mScreenshotsEnabled;
     QString screenshotDirName;
-    QWidget * mainWidget;
     QFile * logFile;
     QTextStream * log;
     QTime * time;
